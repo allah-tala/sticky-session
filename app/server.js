@@ -9,7 +9,7 @@ const io = socketIo(server);
 const PORT = process.env.PORT || 3000;
 
 io.on('connection', socket => {
-  console.log(`Client connected to worker on port ${PORT}`);
+  console.log(`Client connected to worker${process.pid} on port ${PORT}`);
 
   socket.emit('hello', `You are connected to port ${PORT}`);
 
@@ -21,6 +21,10 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     console.log(`Client disconnected from port ${PORT}`);
   });
+});
+
+app.get("/", (req, res) => {
+  res.json({ message: process.pid });
 });
 
 server.listen(PORT, () => {
